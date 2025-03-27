@@ -2,21 +2,28 @@
 data:
   raw:
     interactions: "data/raw/interactions.parquet"
+    interactions_test: "data/raw/interactions_test.parquet"
     tracks: "data/raw/tracks.parquet"
   processed:
     output_dir: "data/processed"
+    track_key_mapping: "data/processed/track_key_mapping.parquet"
 
 # Model parameters
 models:
   popularity:
+    enabled: true
+    n_recommendations: 100
     damping_factor: 0.5
     time_weight: 0.3
   collaborative_filtering:
+    enabled: true
+    n_recommendations: 100
     rank: 100
     reg_param: 0.1
     max_iter: 10
     alpha: 1.0
   hybrid:
+    enabled: false
     popularity_weight: 0.3
     cf_weight: 0.7
 
@@ -25,6 +32,9 @@ training:
   test_size: 0.2
   random_state: 42
   n_folds: 5
+  batch_size: 1024
+  learning_rate: 0.01
+  early_stopping_patience: 5
 
 # Evaluation metrics
 evaluation:
@@ -32,8 +42,24 @@ evaluation:
     - map
     - ndcg
   k_values: [5, 10, 20, 50, 100]
+  cold_start:
+    enabled: true
+    min_interactions: 5
 
 # Logging
 logging:
   level: INFO
-  file: "logs/recommender.log" 
+  file: "logs/recommender.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+# Spark configuration
+spark:
+  app_name: "recommender_system"
+  driver_memory: "4g"
+  executor_memory: "8g"
+  executor_cores: 4
+  num_executors: 2
+  spark.sql.shuffle.partitions: 200
+  spark.default.parallelism: 200 
