@@ -1,0 +1,39 @@
+# Data paths
+data:
+  raw:
+    interactions: "data/raw/interactions.parquet"
+    tracks: "data/raw/tracks.parquet"
+  processed:
+    output_dir: "data/processed"
+
+# Model parameters
+models:
+  popularity:
+    damping_factor: 0.5
+    time_weight: 0.3
+  collaborative_filtering:
+    rank: 100
+    reg_param: 0.1
+    max_iter: 10
+    alpha: 1.0
+  hybrid:
+    popularity_weight: 0.3
+    cf_weight: 0.7
+
+# Training parameters
+training:
+  test_size: 0.2
+  random_state: 42
+  n_folds: 5
+
+# Evaluation metrics
+evaluation:
+  metrics:
+    - map
+    - ndcg
+  k_values: [5, 10, 20, 50, 100]
+
+# Logging
+logging:
+  level: INFO
+  file: "logs/recommender.log" 
