@@ -91,3 +91,4 @@ python src/evaluation/evaluate.py
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details. 
+(Open Source MIT License)
